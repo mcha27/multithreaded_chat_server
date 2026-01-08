@@ -34,7 +34,7 @@ int main() {
         return 1;
     }
 
-    std::cout << "Server listening on port " << PORT << "...\n";
+    std::cout << "Server listening on port " << PORT << std::endl;
 
     client_fd = accept(server_fd, (sockaddr*)&client_addr, &client_len);
     if (client_fd < 0) {
@@ -44,13 +44,16 @@ int main() {
     }
 
     std::cout << "Client connected\n";
+    bool RUN = true;
 
-    memset(buffer, 0, BUFFER_SIZE);
-    ssize_t bytes_received = recv(client_fd, buffer, BUFFER_SIZE - 1, 0);
-    if (bytes_received > 0) {
-        std::cout << "Received: " << buffer << std::endl;
-        const char* response = "Hello from C++ server!";
-        send(client_fd, response, strlen(response), 0);
+    while (RUN){
+        memset(buffer, 0, BUFFER_SIZE);
+        ssize_t bytes_received = recv(client_fd, buffer, BUFFER_SIZE - 1, 0);
+        if (bytes_received > 0) {
+            std::cout << "User: " << buffer;
+            const char* response = "Hello from C++ server!";
+            send(client_fd, response, strlen(response), 0);
+        }
     }
 
     close(client_fd);
